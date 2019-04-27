@@ -1,0 +1,10 @@
+#cloud-config
+# vi: set ft=yaml :
+
+apt_sources:
+    - source: "ppa:ansible/ansible"
+
+packages:
+    - software-properties-common
+    - ansible
+    # - neovim
