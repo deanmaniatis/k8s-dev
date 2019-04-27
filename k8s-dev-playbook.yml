@@ -1,0 +1,25 @@
+---
+- hosts: localhost
+  gather_facts: false
+
+  tasks:
+      - name: Install Microk8s
+        command: snap install microk8s --classic
+        become: yes
+        
+      - name: Enable Microk8s 
+        # command: echo 'hello'
+        command: microk8s.enable dns storage
+        environment:
+            # PATH: "{{ansible_env.PATH}}:/snap/bin"
+            PATH: "{{lookup('env', 'PATH')}}:/snap/bin"
+
+      # - name: Install Helm
+      #   command: snap install helm --classic
+      #   become: yes
+      #
+      # - name: Initialize Helm
+      #   command: helm init --history-max 200
+      #
+      # - name: Update Helm repo
+      #   command: helm repo update
