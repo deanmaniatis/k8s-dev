@@ -1,25 +1,39 @@
 ---
 - hosts: localhost
   gather_facts: false
+  vars:
+      k8s_user: multipass
 
   tasks:
       - name: Install Microk8s
         command: snap install microk8s --classic
         become: yes
         
-      - name: Enable Microk8s 
-        # command: echo 'hello'
-        command: microk8s.enable dns storage
-        environment:
-            # PATH: "{{ansible_env.PATH}}:/snap/bin"
-            PATH: "{{lookup('env', 'PATH')}}:/snap/bin"
+        # TODO: Find the blocking code and use polling instead
+      - name : Pause for a few seconds before configuring Microk8s
+        pause:
+            seconds: 5
 
-      # - name: Install Helm
-      #   command: snap install helm --classic
-      #   become: yes
-      #
-      # - name: Initialize Helm
-      #   command: helm init --history-max 200
-      #
-      # - name: Update Helm repo
-      #   command: helm repo update
+      - name: Enable features of Microk8s 
+        command: /snap/bin/microk8s.enable dns storage
+
+      - name: Setup kubectl alias
+        command: snap alias microk8s.kubectl kubectl
+        become: yes
+
+      - name: Install Helm
+        command: snap install helm --classic
+        become: yes
+      
+      - name: Initialize Helm
+        command: /snap/bin/helm init --history-max 200
+      
+      - name: Update Helm repo
+        command: /snap/bin/helm repo update
+
+      - name: Add Helm bash completion
+        lineinfile:
+            path: /home/{{k8s_user}}/.bashrc
+            line: source <(helm completion bash)
+
+ 

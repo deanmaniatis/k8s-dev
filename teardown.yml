@@ -1,0 +1,11 @@
+---
+- hosts: localhost
+  gather_facts: false
+  
+  tasks:
+      - name: Clean Microk8s cluster
+        command: /snap/bin/microk8s.reset
+
+      - name: Teardown Microk8s
+        command: snap remove microk8s
+        become: yes

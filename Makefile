@@ -1,4 +1,4 @@
-# SHELL := /usr/bin/env sh
+SHELL := /usr/bin/env bash
 
 ifeq (, $(shell which multipass))
  $(error "No 'multipass' binary found in PATH, please install it from https://github.com/CanonicalLtd/multipass")
@@ -21,7 +21,7 @@ launch:
 	@multipass exec -v $(VM_NAME) -- sh -c "(cd $(VM_MOUNT); ansible-playbook $(VM_MOUNT)/$(PLAYBOOK))"
 
 provision:
-	multipass exec -v $(VM_NAME) -- sh -c "(cd $(VM_MOUNT); ansible-playbook -vv $(VM_MOUNT)/$(PLAYBOOK))"
+	multipass exec -v $(VM_NAME) -- sh -c "(cd $(VM_MOUNT); ansible-playbook -v $(VM_MOUNT)/$(PLAYBOOK))"
 # multipass exec -v $(VM_NAME) -- sh -c "(cd $(VM_MOUNT); ansible-playbook -vv $(VM_MOUNT)/$(PLAYBOOK) --user $(VM_USER) )"
 
 shell:
