@@ -36,7 +36,14 @@ stop:
 status:
 	@multipass info $(VM_NAME)
 
+ip:
+	@multipass info $(VM_NAME) | grep -i ipv4 | awk '{print $$2}'
+
+proxy:d
+	@$(eval VM_IP:=$(shell make ip))
+	@sshuttle -r multipass@${VM_IP} 0.0.0.0/0
+
 clean:
 	@multipass delete -p $(VM_NAME)
 
-.PHONY: launch provision shell start stop status clean
+.PHONY: launch provision shell start stop status ip proxy clean
