@@ -39,7 +39,9 @@ status:
 ip:
 	@multipass info $(VM_NAME) | grep -i ipv4 | awk '{print $$2}'
 
-proxy:d
+#Linux multipass key: /var/snap/multipass/common/data/multipassd/ssh-keys/id_rsa
+#MacOS multipass key: /var/root/Library/Application Support/multipassd/ssh-keys/id_rsa
+proxy:
 	@$(eval VM_IP:=$(shell make ip))
 	@sshuttle -r multipass@${VM_IP} 0.0.0.0/0
 
